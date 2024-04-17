@@ -1,11 +1,12 @@
 import mongoose, { Schema, models } from 'mongoose';
 
 export const TestSchema = new Schema({
-  testId: {
+  companyName: {
     type: Number,
+    required: true,
   },
-  title: {
-    type: String,
+  dateApplied: {
+    type: Date,
     required: true,
   },
   content: {

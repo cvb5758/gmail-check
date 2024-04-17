@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/db/db';
-import Test from '@/lib/test/text.model';
+import Test from '@/lib/test/test.model';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handlr(
