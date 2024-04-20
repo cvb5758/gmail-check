@@ -2,14 +2,25 @@ import Image from 'next/image';
 
 export default function Logo() {
   return (
-    <div className="flex justify-center">
+    <section
+      className="items-center h-0
+      flex flex-col justify-center
+    "
+    >
       <Image
-        src="/images/Logo_120x120.png"
+        src="/images/Logo.png"
         alt="logo"
-        width={120}
-        height={120}
-        className="rounded-full"
+        width={180}
+        height={180}
+        className="
+          shadow-lg
+          mb-4
+          w-3/4
+          max-w-xs
+          max-h-20
+          overflow-hidden
+        "
       />
-    </div>
+    </section>
   );
 }

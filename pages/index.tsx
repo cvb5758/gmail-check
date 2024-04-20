@@ -1,7 +1,6 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@/ui/button';
 import LoginPage from '@/components/login/login';
 
 export default function Home() {
