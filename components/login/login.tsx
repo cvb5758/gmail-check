@@ -1,5 +1,6 @@
 import { Button } from '@/ui/button';
 import Logo from '@/ui/logo';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 export default function LoginPage() {
   return (
@@ -11,7 +12,9 @@ export default function LoginPage() {
       >
         <Logo />
         <h1 className="text-xl font-bold">G-Check</h1>
-        <Button>Sign in with Google</Button>
+        <Button>
+          Log in <ArrowRightIcon className="ml-1 h-5 w-5 text-gray-50" />
+        </Button>
       </div>
     </main>
   );
