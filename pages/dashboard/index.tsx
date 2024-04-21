@@ -23,6 +23,7 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
     <div className="min-h-screen bg-gray-100">
       <header
         className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16
+        className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-24
       "
       >
         <div
@@ -32,8 +33,27 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
         "
         >
           <h1 className="text-3xl font-bold text-gray-900">G-Check</h1>
+          <Button
+            className="
+                    bg-blue-500
+                    hover:bg-blue-400
+                    text-white
+                    font-bold
+                    py-3
+                    px-4
+                    rounded-lg
+                    shadow-lg
+                    transition
+                    duration-300
+                    ease-in-out
+                    flex
+                    items-center
+                  "
+            onClick={handleLogout}
+          >
+            Sign out
+          </Button>
         </div>
-        <Button onClick={handleLogout}>Sign out</Button>
       </header>
 
       <section>
