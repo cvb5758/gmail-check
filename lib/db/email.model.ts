@@ -1,8 +1,8 @@
 import mongoose, { Schema, models } from 'mongoose';
 
-export const emailSchema = new Schema({
-  id: String,
-  snippet: String,
+const emailSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  subject: String,
 });
 
 const Email = models?.Email || mongoose.model('Email', emailSchema);

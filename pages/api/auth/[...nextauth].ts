@@ -29,7 +29,6 @@ const authHandler: NextApiHandler = NextAuth({
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;
 
-      // console.log('session: ', session);
       return session;
     },
     async signIn({ account, profile }) {
