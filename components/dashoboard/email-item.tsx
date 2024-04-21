@@ -2,10 +2,11 @@ import { Email } from '@/lib/definition';
 import { useState } from 'react';
 
 interface CheckItemProps {
-  item: Email;
+  items: Email;
 }
-export default function EmailItem({ item }: CheckItemProps) {
+export default function EmailItem({ items }: CheckItemProps) {
   const [checked, setChecked] = useState(false);
+  const [item, setItems] = useState(items);
 
   const handleCheck = () => {
     setChecked(!checked);
@@ -20,12 +21,12 @@ export default function EmailItem({ item }: CheckItemProps) {
           checked={checked}
           onChange={handleCheck}
         />
-        <p className="text-lg">{item.snippet}</p>
+        <p className="text-lg">{item.subject}</p>
       </div>
       <div>
-        <p className="text-sm text-gray-500">
+        {/* <p className="text-sm text-gray-500">
           {new Date().toLocaleDateString()}
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -1,18 +1,14 @@
-import EmailList from '@/components/dashoboard/\bemail-list';
+import EmailList from '@/components/dashoboard/email-list';
+import { Email } from '@/lib/definition';
+import { getEmails } from '@/lib/Emails';
+
 import { Button } from '@/ui/button';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-interface Email {
-  id: string;
-  snippet: string;
-}
-
 export default function Dashboard({ emails }: { emails: Email[] }) {
   const { data: session } = useSession();
   const router = useRouter();
-
-  // console.log(emails);
 
   const handleLogout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' });
@@ -22,7 +18,6 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
   return (
     <div className="min-h-screen bg-gray-100">
       <header
-        className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16
         className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-24
       "
       >
@@ -57,8 +52,21 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
       </header>
 
       <section>
-        <EmailList />
+        <EmailList emails={emails} />
       </section>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const emails = await getEmails();
+  // console.log(
+  //   'emails',
+  //   emails.map((email) => email.subject)
+  // );
+  return {
+    props: {
+      emails,
+    },
+  };
 }

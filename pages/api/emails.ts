@@ -1,6 +1,8 @@
+import Email from '@/lib/db/email.model';
 import { google } from 'googleapis';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -8,6 +10,7 @@ export default async function handler(
   const session = await getSession({ req });
 
   if (!session || !session.accessToken) {
+    console.log('No session or access token found');
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
@@ -17,15 +20,14 @@ export default async function handler(
     refresh_token: session.refreshToken,
   });
 
-  // console.log('oauth2Client: ', oauth2Client);
-  // console.log(session);
   const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
-
+  console.log('Fetching emails');
   try {
+    console.log('Fetching emails');
     const listResponse = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 10, // 또는 원하는 수량
+      maxResults: 10,
     });
 
     const messages = listResponse.data.messages || [];
@@ -47,12 +49,21 @@ export default async function handler(
         detail.data.payload?.headers?.find((h) => h.name === 'Subject')
           ?.value || 'No Subject',
     }));
-    console.log(
-      'titles: ',
-      titles.map((title) => title.subject)
-    );
 
-    res.status(200).json(titles);
+    const newTitles = [];
+    for (const title of titles) {
+      const exists = await Email.exists({ id: title.id });
+      console.log('exists:', exists);
+      if (!exists) {
+        newTitles.push(title);
+      }
+    }
+
+    if (newTitles.length > 0) {
+      await Email.insertMany(newTitles);
+    }
+
+    res.status(200).json(newTitles);
   } catch (error) {
     console.error('Failed to fetch emails:', error);
     res.status(500).json({ message: 'Internal Server Error' });
