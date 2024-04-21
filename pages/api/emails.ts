@@ -37,23 +37,26 @@ export default async function handler(
           userId: 'me',
           id: message.id!,
           format: 'metadata',
-          metadataHeaders: ['Subject'],
+          metadataHeaders: ['Date', 'Subject'],
         });
-        return messageDetails;
+        const receivedAt = new Date(
+          messageDetails.data.payload?.headers?.find((h) => h.name === 'Date')
+            ?.value || ''
+        );
+        return {
+          id: message.id,
+          subject:
+            messageDetails.data.payload?.headers?.find(
+              (h) => h.name === 'Subject'
+            )?.value || 'No Subject',
+          receivedAt,
+        };
       })
     );
 
-    const titles = details.map((detail) => ({
-      id: detail.data.id,
-      subject:
-        detail.data.payload?.headers?.find((h) => h.name === 'Subject')
-          ?.value || 'No Subject',
-    }));
-
     const newTitles = [];
-    for (const title of titles) {
+    for (const title of details) {
       const exists = await Email.exists({ id: title.id });
-      console.log('exists:', exists);
       if (!exists) {
         newTitles.push(title);
       }

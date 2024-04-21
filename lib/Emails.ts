@@ -4,7 +4,13 @@ import Email from './db/email.model';
 export async function getEmails() {
   await dbConnect();
   try {
-    const emails = await Email.find({});
+    const emails = await Email.find({}).sort({ receivedAt: -1 });
+
+    console.log(
+      'Fetched emails:',
+      emails.map((email) => email)
+    );
+
     return emails.map((email) => ({
       id: email._id.toString(),
       subject: email.subject,
