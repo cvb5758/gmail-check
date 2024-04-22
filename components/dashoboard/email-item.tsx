@@ -1,12 +1,8 @@
 import { Email } from '@/lib/definition';
 import { useState } from 'react';
 
-interface CheckItemProps {
-  items: Email;
-}
-export default function EmailItem({ items }: CheckItemProps) {
+const EmailItem = ({ email }: { email: Email }) => {
   const [checked, setChecked] = useState(false);
-  const [item, setItems] = useState(items);
 
   const handleCheck = () => {
     setChecked(!checked);
@@ -21,13 +17,10 @@ export default function EmailItem({ items }: CheckItemProps) {
           checked={checked}
           onChange={handleCheck}
         />
-        <p className="text-lg">{item.subject}</p>
-      </div>
-      <div>
-        {/* <p className="text-sm text-gray-500">
-          {new Date().toLocaleDateString()}
-        </p> */}
+        <p className="text-lg">{email.subject}</p>
       </div>
     </div>
   );
-}
+};
+
+export default EmailItem;

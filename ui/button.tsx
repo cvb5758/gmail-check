@@ -7,7 +7,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({ children, className, onClick }: ButtonProps) {
   return (
-    <button onClick={onClick} className={className}>
+    <button
+      onClick={onClick}
+      className={className + 'ransition duration-300 ease-in-out'}
+    >
       {children}
     </button>
   );
