@@ -31,6 +31,7 @@ export default async function handler(
     });
 
     const messages = listResponse.data.messages || [];
+
     const details = await Promise.all(
       messages.map(async (message) => {
         const messageDetails = await gmail.users.messages.get({
