@@ -66,12 +66,9 @@ export default function EmailList({ emails }: { emails: Email[] }) {
       Array.from(selectedTags).some((tag) => email.subject.includes(tag))
   );
   return (
-    <div>
-      <header className="shadow-sm sticky top-0 z-50 flex items-center justify-center px-4 sm:px-6 lg:px-8 h-24">
-        <div
-          className="
-          max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-center w-full gap-4"
-        >
+    <main>
+      <header className="flex items-center justify-center my-2 px-4 sm:px-6 lg:px-8 h-32">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex my-2 items-center justify-center w-full gap-4">
           <Button
             onClick={handleFetchEmails}
             className="bg-white hover:bg-blue-200 font-bold py-3 px-4 rounded-lg shadow-lg border border-blue-200 hover:border-blue-400 "
@@ -80,20 +77,13 @@ export default function EmailList({ emails }: { emails: Email[] }) {
           </Button>
         </div>
       </header>
-      <section className="w-4/5 bg-white p-4 shadow-lg rounded-xl text-center flex flex-col items-center justify-center mx-auto my-8">
-        <div className="w-full flex items-center justify-start gap-4 px-4 py-2 sm:px-6 lg:px-8">
+      <article className="w-2/3 bg-white p-4 shadow-lg rounded-xl text-center flex flex-col items-center justify-center mx-auto mb-8 border">
+        <div className="w-full flex items-center justify-start px-4 py-2 sm:px-6 lg:px-8">
           <Button
             onClick={handleOpenModal}
-            className="bg-white hover:bg-blue-200 font-bold py-3 px-4 rounded-lg flex items-center border border-blue-200 "
+            className="bg-white hover:bg-blue-200 font-bold m-2 py-3 px-4 rounded-lg flex items-center border border-blue-200 "
           >
-            <p
-              className="
-            text-gray-700
-            mr-1
-            "
-            >
-              태그 추가
-            </p>
+            <p className="text-gray-700 mr-1">태그 추가</p>
             <PlusIcon className="h-5 w-5 text-blue-500" />
           </Button>
 
@@ -113,7 +103,7 @@ export default function EmailList({ emails }: { emails: Email[] }) {
         {isModalOpen && (
           <TagModal onClose={() => setIsModalOpen(false)} onAddTag={onAddTag} />
         )}
-      </section>
-    </div>
+      </article>
+    </main>
   );
 }

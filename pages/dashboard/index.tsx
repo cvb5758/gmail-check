@@ -16,26 +16,10 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header
-        className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-24
-      "
-      >
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full gap-4">
-          <h1 className="text-3xl font-bold text-gray-900">G-Check</h1>
-          <Button
-            className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-3 px-4 rounded-lg shadow-lg flex items-center"
-            onClick={handleLogout}
-          >
-            Sign out
-          </Button>
-        </div>
-      </header>
-
-      <section>
-        <EmailList emails={emails} />
-      </section>
-    </div>
+    <section className="flex flex-col bg-gray-100 min-h-screen">
+      <Header />
+      <EmailList emails={emails} />
+    </section>
   );
 }
 

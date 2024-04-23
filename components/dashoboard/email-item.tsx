@@ -13,9 +13,9 @@ const EmailItem = ({ email }: { email: Email }) => {
       <div className="flex items-center space-x-4">
         <input
           type="checkbox"
-          className="form-checkbox h-6 w-6 text-indigo-600"
           checked={checked}
           onChange={handleCheck}
+          className="mr-4 h-4 w-4 text-indigo-600"
         />
         <p className="text-lg">{email.subject}</p>
       </div>
