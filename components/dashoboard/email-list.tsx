@@ -7,12 +7,15 @@ import TagModal from '../tag-modal';
 import { DeleteTag, fetchTags } from '@/lib/Tag';
 import Tags from './tags';
 import { EnvelopeOpenIcon, PlusIcon } from '@heroicons/react/20/solid';
+import { useRouter } from 'next/router';
 
 export default function EmailList({ emails }: { emails: Email[] }) {
   const [email, setEmail] = useState<Email[]>(emails);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
+  const [tags, setTags] = useState<string[]>([]); // 지워야할거
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set()); // 지워야할거
+
+  const router = useRouter();
 
   useEffect(() => {
     const loadTags = async () => {
@@ -22,21 +25,22 @@ export default function EmailList({ emails }: { emails: Email[] }) {
     loadTags();
   }, []);
 
+  const handleFetchEmails = async () => {
+    const emails = await fetchEmails();
+    if (emails) {
+      setEmail(emails);
+    }
+  };
+
   const handleDeleteTag = async (tag: string) => {
     try {
       const response = await DeleteTag(tag);
       if (response) {
         setTags(tags.filter((t) => t !== tag));
+        router.reload();
       }
     } catch (error) {
       console.error('Failed to delete tag:', error);
-    }
-  };
-
-  const handleFetchEmails = async () => {
-    const emails = await fetchEmails();
-    if (emails) {
-      setEmail(emails);
     }
   };
 
@@ -65,6 +69,7 @@ export default function EmailList({ emails }: { emails: Email[] }) {
       selectedTags.size === 0 ||
       Array.from(selectedTags).some((tag) => email.subject.includes(tag))
   );
+
   return (
     <main>
       <header className="flex items-center justify-center my-2 px-4 sm:px-6 lg:px-8 h-32">
