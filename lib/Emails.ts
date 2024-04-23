@@ -10,6 +10,13 @@ export async function getEmails() {
     return emails.map((email) => ({
       id: email._id.toString(),
       subject: email.subject,
+      receivedAt: new Date(email.receivedAt).toLocaleString('ko-KR', {
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+      }),
+      isChecked: email.isChecked,
     }));
   } catch (error) {
     console.error('Failed to fetch emails:', error);
@@ -18,6 +25,7 @@ export async function getEmails() {
 }
 
 export async function fetchEmails() {
+  console.log('Fetching emails...');
   try {
     const response = await fetch('/api/emails');
 
@@ -65,6 +73,28 @@ export async function getFilteredEmails() {
     }));
   } catch (error) {
     console.error('Failed to fetch filtered emails:', error);
+    throw error;
+  }
+}
+export async function checkedEmails(
+  emailId: string,
+  isChecked: boolean
+): Promise<void> {
+  try {
+    const response = await fetch(`/api/emails/${emailId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ isChecked }),
+    });
+    console.log('Checked email:', response);
+    if (!response.ok) {
+      console.log('Failed to check email');
+      throw new Error('Failed to check email');
+    }
+  } catch (error) {
+    console.error('Failed to check email:', error);
     throw error;
   }
 }

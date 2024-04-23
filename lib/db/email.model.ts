@@ -5,6 +5,7 @@ const emailSchema = new mongoose.Schema(
     id: { type: String, required: true, unique: true },
     subject: String,
     receivedAt: Date,
+    isChecked: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
