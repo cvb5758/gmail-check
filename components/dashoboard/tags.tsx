@@ -1,6 +1,6 @@
 import { Tag } from '@/lib/definition';
 import { Button } from '@/ui/button';
-import { ArchiveBoxXMarkIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 export default function Tags({
   tags,

@@ -2,7 +2,7 @@ import { checkedEmails } from '@/lib/Emails';
 import { Email } from '@/lib/definition';
 import { useState } from 'react';
 
-const EmailItem = ({ email }: { email: Email }) => {
+export const EmailItem = ({ email }: { email: Email }) => {
   const [checked, setChecked] = useState(email.isChecked || false);
 
   const handleCheck = async () => {
@@ -41,5 +41,3 @@ const EmailItem = ({ email }: { email: Email }) => {
     </article>
   );
 };
-
-export default EmailItem;
