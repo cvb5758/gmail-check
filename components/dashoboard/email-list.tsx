@@ -1,19 +1,25 @@
 import { Email } from '@/lib/definition';
-import EmailItem from './email-item';
 import { fetchEmails } from '@/lib/Emails';
 import { Button } from '@/ui/button';
+import { EmailItem } from './email-item';
 import { useEffect, useState } from 'react';
 import TagModal from '../tag-modal';
 import { DeleteTag, fetchTags } from '@/lib/Tag';
 import Tags from './tags';
-import { EnvelopeOpenIcon, PlusIcon } from '@heroicons/react/20/solid';
+import {
+  CheckCircleIcon,
+  EnvelopeOpenIcon,
+  PlusIcon,
+} from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 
 export default function EmailList({ emails }: { emails: Email[] }) {
   const [email, setEmail] = useState<Email[]>(emails);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [emailsPerPage] = useState(20);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tags, setTags] = useState<string[]>([]); // 지워야할거
-  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set()); // 지워야할거
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
   const router = useRouter();
 
@@ -25,10 +31,15 @@ export default function EmailList({ emails }: { emails: Email[] }) {
     loadTags();
   }, []);
 
+  // 현재 페이지에 맞게 이메일을 필터링
+  const indexOfLastEmail = currentPage * emailsPerPage;
+  const indexOfFirstEmail = indexOfLastEmail - emailsPerPage;
+  const currentEmails = email.slice(indexOfFirstEmail, indexOfLastEmail);
+
   const handleFetchEmails = async () => {
-    const emails = await fetchEmails();
-    if (emails) {
-      setEmail(emails);
+    const emailsData = await fetchEmails();
+    if (emailsData && emailsData.length > 0) {
+      setEmail(emailsData);
     }
   };
 
@@ -60,15 +71,17 @@ export default function EmailList({ emails }: { emails: Email[] }) {
     } else {
       newSet.add(tag);
     }
-    console.log(newSet);
     setSelectedTags(newSet);
   };
 
-  const filteredEmails = email.filter(
+  const filteredEmails = currentEmails.filter(
     (email) =>
       selectedTags.size === 0 ||
       Array.from(selectedTags).some((tag) => email.subject.includes(tag))
   );
+
+  // 페이지 번호를 설정하는 함수
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <main>
@@ -83,21 +96,29 @@ export default function EmailList({ emails }: { emails: Email[] }) {
         </div>
       </header>
       <article className="w-2/3 bg-white p-4 shadow-lg rounded-xl text-center flex flex-col items-center justify-center mx-auto mb-8 border">
-        <div className="w-full flex items-center justify-start px-4 py-2 sm:px-6 lg:px-8">
-          <Button
-            onClick={handleOpenModal}
-            className="bg-white hover:bg-blue-200 font-bold m-2 py-3 px-4 rounded-lg flex items-center border border-blue-200 "
-          >
-            <p className="text-gray-700 mr-1">태그 추가</p>
-            <PlusIcon className="h-5 w-5 text-blue-500" />
-          </Button>
+        <div className="w-full flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+          <div className="w-full flex items-center justify-start px-4 py-2 sm:px-6 lg:px-8">
+            <Button
+              onClick={handleOpenModal}
+              className="bg-white hover:bg-blue-200 font-bold m-2 py-3 px-4 rounded-lg flex items-center border border-blue-200 "
+            >
+              <p className="text-gray-700 mr-1">태그 추가</p>
+              <PlusIcon className="h-5 w-5 text-blue-500" />
+            </Button>
 
-          <Tags
-            tags={tags}
-            selectedTags={selectedTags}
-            toggleTagSelection={toggleTagSelection}
-            onDeleteTag={handleDeleteTag}
-          />
+            <Tags
+              tags={tags}
+              selectedTags={selectedTags}
+              toggleTagSelection={toggleTagSelection}
+              onDeleteTag={handleDeleteTag}
+            />
+          </div>
+          <div className="flex items-center justify-end sm:px-6 lg:px-8">
+            <CheckCircleIcon
+              onClick={() => router.reload()}
+              className="h-8 w-8 text-green-500 cursor-pointer"
+            />
+          </div>
         </div>
 
         <div className="w-full">
@@ -108,6 +129,26 @@ export default function EmailList({ emails }: { emails: Email[] }) {
         {isModalOpen && (
           <TagModal onClose={() => setIsModalOpen(false)} onAddTag={onAddTag} />
         )}
+        <div className="flex items-center justify-center gap-2 w-full p-4 sm:px-6 lg:px-8">
+          {Array.from(
+            { length: Math.ceil(emails.length / emailsPerPage) },
+            (_, i) => (
+              <Button
+                key={i + 1}
+                onClick={() => {
+                  paginate(i + 1);
+                }}
+                className={`${
+                  currentPage === i + 1
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white text-gray-800'
+                } border border-blue-200 hover:bg-blue-200 hover:border-blue-400 font-bold px-2 rounded-lg shadow-lg `}
+              >
+                {i + 1}
+              </Button>
+            )
+          )}
+        </div>
       </article>
     </main>
   );
