@@ -3,15 +3,15 @@ import { fetchEmails } from '@/lib/Emails';
 import { Button } from '@/ui/button';
 import { EmailItem } from './email-item';
 import { useEffect, useState } from 'react';
-import TagModal from '../tag-modal';
 import { DeleteTag, fetchTags } from '@/lib/Tag';
-import Tags from './tags';
 import {
   CheckCircleIcon,
   EnvelopeOpenIcon,
   PlusIcon,
 } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
+import Tags from '../tag/tag';
+import TagModal from '../tag/tag-modal';
 
 export default function EmailList({ emails }: { emails: Email[] }) {
   const [email, setEmail] = useState<Email[]>(emails);
@@ -39,7 +39,12 @@ export default function EmailList({ emails }: { emails: Email[] }) {
   const handleFetchEmails = async () => {
     const emailsData = await fetchEmails();
     if (emailsData && emailsData.length > 0) {
-      setEmail(emailsData);
+      setEmail((prevEmails) => [
+        ...prevEmails,
+        ...emailsData.filter(
+          (email: Email) => !prevEmails.find((e) => e.id === email.id)
+        ),
+      ]);
     }
   };
 

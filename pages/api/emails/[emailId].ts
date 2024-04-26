@@ -7,9 +7,8 @@ export default async function handler(
 ) {
   if (req.method === 'PUT') {
     const { emailId } = req.query;
+    const { isChecked } = req.body;
     try {
-      const { isChecked } = req.body;
-
       const email = await Email.findOneAndUpdate(
         { _id: emailId },
         { isChecked },

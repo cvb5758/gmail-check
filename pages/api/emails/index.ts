@@ -27,7 +27,7 @@ export default async function handler(
     const listResponse = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 500,
+      maxResults: 30,
     });
 
     const messages = listResponse.data.messages || [];
