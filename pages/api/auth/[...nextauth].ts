@@ -43,6 +43,7 @@ const authHandler: NextApiHandler = NextAuth({
     signOut: '/auth/signout',
     error: '/auth/error',
   },
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export default authHandler;
