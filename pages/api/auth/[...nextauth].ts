@@ -14,7 +14,7 @@ const authHandler: NextApiHandler = NextAuth({
           access_type: 'offline',
           prompt: 'consent',
         },
-      }, // Add a colon (:) here
+      },
     }),
   ],
   callbacks: {
