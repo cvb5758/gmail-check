@@ -15,7 +15,7 @@ export const EmailItem = ({ email }: { email: Email }) => {
     }
   };
   return (
-    <article
+    <li
       className={`flex items-center justify-between p-4 border-b border-gray-200 ${
         checked ? 'bg-blue-100' : ''
       }`}
@@ -38,6 +38,6 @@ export const EmailItem = ({ email }: { email: Email }) => {
       <span className={`text-right ${checked ? 'text-gray-500' : ''}`}>
         {email.receivedAt}
       </span>
-    </article>
+    </li>
   );
 };

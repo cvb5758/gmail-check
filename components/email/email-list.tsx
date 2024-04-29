@@ -12,62 +12,51 @@ import {
 import { useRouter } from 'next/router';
 import Tags from '../tag/tag';
 import TagModal from '../tag/tag-modal';
+import ListDetail from './list-detail';
 
 export default function EmailList({ emails }: { emails: Email[] }) {
   const [email, setEmail] = useState<Email[]>(emails);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [emailsPerPage] = useState(20);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const loadTags = async () => {
-      const fetchedTags = await fetchTags();
-      setTags(fetchedTags.map((tag: { name: string }) => tag.name));
-    };
-    loadTags();
-  }, []);
-
-  // 현재 페이지에 맞게 이메일을 필터링
-  const indexOfLastEmail = currentPage * emailsPerPage;
-  const indexOfFirstEmail = indexOfLastEmail - emailsPerPage;
-  const currentEmails = email.slice(indexOfFirstEmail, indexOfLastEmail);
+  // useEffect(() => {
+  //   const loadTags = async () => {
+  //     const fetchedTags = await fetchTags();
+  //     setTags(fetchedTags.map((tag: { name: string }) => tag.name));
+  //   };
+  //   loadTags();
+  // }, []);
 
   const handleFetchEmails = async () => {
-    const emailsData = await fetchEmails();
-    if (emailsData && emailsData.length > 0) {
-      setEmail((prevEmails) => [
-        ...prevEmails,
-        ...emailsData.filter(
-          (email: Email) => !prevEmails.find((e) => e.id === email.id)
-        ),
-      ]);
-    }
-  };
-
-  const handleDeleteTag = async (tag: string) => {
     try {
-      const response = await DeleteTag(tag);
-      if (response) {
-        setTags(tags.filter((t) => t !== tag));
-        router.reload();
-      }
+      const res = await fetchEmails();
+      setEmail(res);
     } catch (error) {
-      console.error('Failed to delete tag:', error);
+      console.error('Error fetching emails:', error);
+      alert('Error fetching emails');
     }
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  // const handleDeleteTag = async (tag: string) => {
+  //   try {
+  //     const response = await DeleteTag(tag);
+  //     if (response) {
+  //       setTags(tags.filter((t) => t !== tag));
+  //       router.reload();
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to delete tag:', error);
+  //   }
+  // };
 
-  const onAddTag = (tag: string) => {
-    const updatedTags = [...tags, tag];
-    setTags(updatedTags);
-  };
+  // const handleOpenModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const onAddTag = (tag: string) => {
+  //   const updatedTags = [...tags, tag];
+  //   setTags(updatedTags);
+  // };
 
   const toggleTagSelection = (tag: string) => {
     const newSet = new Set(selectedTags);
@@ -79,14 +68,14 @@ export default function EmailList({ emails }: { emails: Email[] }) {
     setSelectedTags(newSet);
   };
 
-  const filteredEmails = currentEmails.filter(
-    (email) =>
-      selectedTags.size === 0 ||
-      Array.from(selectedTags).some((tag) => email.subject.includes(tag))
-  );
+  // const filteredEmails = currentEmails.filter(
+  //   (email) =>
+  //     selectedTags.size === 0 ||
+  //     Array.from(selectedTags).some((tag) => email.subject.includes(tag))
+  // );
 
-  // 페이지 번호를 설정하는 함수
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  // // 페이지 번호를 설정하는 함수
+  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <main>
@@ -100,7 +89,7 @@ export default function EmailList({ emails }: { emails: Email[] }) {
           </Button>
         </div>
       </header>
-      <article className="w-2/3 bg-white p-4 shadow-lg rounded-xl text-center flex flex-col items-center justify-center mx-auto mb-8 border">
+      {/* <article className="w-2/3 bg-white p-4 shadow-lg rounded-xl text-center flex flex-col items-center justify-center mx-auto mb-8 border">
         <div className="w-full flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
           <div className="w-full flex items-center justify-start px-4 py-2 sm:px-6 lg:px-8">
             <Button
@@ -154,7 +143,8 @@ export default function EmailList({ emails }: { emails: Email[] }) {
             )
           )}
         </div>
-      </article>
+      </article> */}
+      <ListDetail email={email} />
     </main>
   );
 }
