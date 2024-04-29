@@ -21,13 +21,15 @@ export default async function handler(
   });
 
   const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+
   console.log('Fetching emails');
+
   try {
     console.log('Fetching emails');
     const listResponse = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 30,
+      maxResults: 20,
     });
 
     const messages = listResponse.data.messages || [];
@@ -40,34 +42,52 @@ export default async function handler(
           format: 'metadata',
           metadataHeaders: ['Date', 'Subject'],
         });
-        const receivedAt = new Date(
-          messageDetails.data.payload?.headers?.find((h) => h.name === 'Date')
-            ?.value || ''
-        );
         return {
           id: message.id,
           subject:
             messageDetails.data.payload?.headers?.find(
               (h) => h.name === 'Subject'
             )?.value || 'No Subject',
-          receivedAt,
+          receivedAt:
+            messageDetails.data.payload?.headers?.find((h) => h.name === 'Date')
+              ?.value || new Date(),
         };
       })
     );
 
-    const newTitles = [];
-    for (const title of details) {
-      const exists = await Email.exists({ id: title.id });
-      if (!exists) {
-        newTitles.push(title);
-      }
+    // const existingEmails = await Email.find({
+    //   id: { $in: details.map((email) => email.id) },
+    // }).exec();
+
+    // const existingEmailIds = existingEmails.map((email) => email.id);
+    // const newEmails = details.filter(
+    //   (email) => !existingEmailIds.includes(email.id)
+    // );
+
+    const existingIds = (await Email.find({}).select('id').lean()).map(
+      (email) => email.id
+    );
+    const newEmails = details.filter(
+      (email) => !existingIds.includes(email.id)
+    );
+
+    if (newEmails.length > 0) {
+      await Email.insertMany(newEmails);
     }
 
-    if (newTitles.length > 0) {
-      await Email.insertMany(newTitles);
-    }
+    // const newTitles = [];
+    // for (const title of details) {
+    //   const exists = await Email.exists({ id: title.id });
+    //   if (!exists) {
+    //     newTitles.push(title);
+    //   }
+    // }
 
-    res.status(200).json(newTitles);
+    // if (newTitles.length > 0) {
+    //   await Email.insertMany(newTitles);
+    // }
+
+    res.status(200).json(newEmails);
   } catch (error) {
     console.error('Failed to fetch emails:', error);
     res.status(500).json({ message: 'Internal Server Error' });

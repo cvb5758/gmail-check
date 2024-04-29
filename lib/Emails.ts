@@ -5,18 +5,20 @@ import Tag from './db/tag.model';
 export async function getEmails() {
   await dbConnect();
   try {
-    const emails = await Email.find({}).sort({ receivedAt: -1 });
+    const response = await fetch('http://localhost:3000/api/emails/getEmails');
+    const emails = await response.json();
 
-    return emails.map((email) => ({
+    return emails.map((email: any) => ({
+      ...emails,
       id: email._id.toString(),
       subject: email.subject,
+      isChecked: email.isChecked,
       receivedAt: new Date(email.receivedAt).toLocaleString('ko-KR', {
         month: 'numeric',
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
       }),
-      isChecked: email.isChecked,
     }));
   } catch (error) {
     console.error('Failed to fetch emails:', error);
@@ -27,7 +29,9 @@ export async function getEmails() {
 export async function fetchEmails() {
   console.log('Fetching emails...');
   try {
-    const response = await fetch('/api/emails');
+    const response = await fetch(
+      'http://localhost:3000/api/emails/fetchEmails'
+    );
 
     if (!response.ok) {
       console.log('Failed to fetch emails');
@@ -37,6 +41,32 @@ export async function fetchEmails() {
     return data;
   } catch (error) {
     console.error('Failed to fetch emails:', error);
+    throw error;
+  }
+}
+
+export async function checkedEmails(
+  emailId: string,
+  isChecked: boolean
+): Promise<void> {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/emails/${emailId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isChecked }),
+      }
+    );
+    console.log('Checked email:', response);
+    if (!response.ok) {
+      console.log('Failed to check email');
+      throw new Error('Failed to check email');
+    }
+  } catch (error) {
+    console.error('Failed to check email:', error);
     throw error;
   }
 }
@@ -73,28 +103,6 @@ export async function getFilteredEmails() {
     }));
   } catch (error) {
     console.error('Failed to fetch filtered emails:', error);
-    throw error;
-  }
-}
-export async function checkedEmails(
-  emailId: string,
-  isChecked: boolean
-): Promise<void> {
-  try {
-    const response = await fetch(`/api/emails/${emailId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ isChecked }),
-    });
-    console.log('Checked email:', response);
-    if (!response.ok) {
-      console.log('Failed to check email');
-      throw new Error('Failed to check email');
-    }
-  } catch (error) {
-    console.error('Failed to check email:', error);
     throw error;
   }
 }
