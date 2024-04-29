@@ -1,4 +1,4 @@
-import EmailList from '@/components/dashoboard/email-list';
+import EmailList from '@/components/email/email-list';
 import { Email } from '@/lib/definition';
 import { fetchEmails, getEmails, getFilteredEmails } from '@/lib/Emails';
 import { Button } from '@/ui/button';
@@ -16,7 +16,7 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
   };
 
   return (
-    <section className="flex flex-col bg-gray-100 min-h-screen">
+    <section className="flex flex-col bg-blue-50  min-h-screen">
       <header className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-24">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full gap-4">
           <h1 className="text-3xl font-bold text-gray-600 p-2">G-Check</h1>

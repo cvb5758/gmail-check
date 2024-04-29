@@ -14,7 +14,7 @@ export default function Home() {
   }, [session, router]);
 
   return (
-    <main>
+    <main className="bg-blue-50 ">
       <LoginPage />
     </main>
   );
