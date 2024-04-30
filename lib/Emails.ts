@@ -27,8 +27,8 @@ export async function getEmails() {
 }
 
 export async function fetchEmails() {
-  console.log('Fetching emails...');
   try {
+    console.log('Fetching emails...');
     const response = await fetch(
       'http://localhost:3000/api/emails/fetchEmails'
     );
