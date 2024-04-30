@@ -5,6 +5,10 @@ const tagSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  selected: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Tag = models?.Tag || mongoose.model('Tag', tagSchema);

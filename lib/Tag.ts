@@ -62,3 +62,25 @@ export const DeleteTag = async (name: string) => {
     return null;
   }
 };
+
+export const ToggleTag = async (tagId: string) => {
+  console.log('Toggling tag:', tagId);
+  try {
+    const response = await fetch('/api/tags/toggle', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id: tagId }),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      throw new Error(await response.text());
+    }
+  } catch (error) {
+    console.error('Failed to toggle tag:', error);
+    return null;
+  }
+};
