@@ -5,9 +5,12 @@ import { useState } from 'react';
 import { EnvelopeOpenIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import ListDetail from './list-detail';
+import { useQuery } from 'react-query';
+import { fetchTags } from '@/lib/Tag';
 
 export default function EmailList({ emails }: { emails: Email[] }) {
   const [email, setEmail] = useState<Email[]>(emails);
+  const { data: tags, isLoading, error } = useQuery('tags', fetchTags);
 
   const router = useRouter();
 
@@ -22,6 +25,9 @@ export default function EmailList({ emails }: { emails: Email[] }) {
     }
   };
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.toString()}</p>;
+
   return (
     <main>
       <header className="flex items-center justify-center my-2 px-4 sm:px-6 lg:px-8 h-32">
@@ -34,7 +40,7 @@ export default function EmailList({ emails }: { emails: Email[] }) {
           </Button>
         </div>
       </header>
-      <ListDetail email={email} />
+      <ListDetail email={email} tags={tags} />
     </main>
   );
 }

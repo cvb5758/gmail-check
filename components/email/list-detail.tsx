@@ -1,3 +1,5 @@
+'use client';
+
 import { Email } from '@/lib/definition';
 import { useState } from 'react';
 import { EmailItem } from './email-item';
@@ -6,15 +8,37 @@ import { useRouter } from 'next/router';
 import Pagenation from '../pagenation/pagenation';
 import Tag from '../tag/tag';
 
-export default function ListDetail({ email }: { email: Email[] }) {
-  const router = useRouter();
-
+export default function ListDetail({
+  email,
+  tags,
+}: {
+  email: Email[];
+  tags: { _id: string; name: string; selected: boolean }[];
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [emailsPerPage] = useState(20);
 
+  const router = useRouter();
+
   const indexOfLastEmail = currentPage * emailsPerPage;
   const indexOfFirstEmail = indexOfLastEmail - emailsPerPage;
-  const currentEmails = email.slice(indexOfFirstEmail, indexOfLastEmail);
+
+  const selectedTags = tags
+    ?.filter((tag) => tag.selected)
+    .map((tag) => tag.name);
+  console.log('selectedTags', selectedTags);
+
+  const filteredEmails =
+    selectedTags.length > 0
+      ? email.filter((email) =>
+          selectedTags.some((tag) => email.subject.includes(tag))
+        )
+      : email;
+
+  const currentEmails = filteredEmails.slice(
+    indexOfFirstEmail,
+    indexOfLastEmail
+  );
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 

@@ -74,8 +74,6 @@ export async function checkedEmails(
 export async function getFilteredEmails() {
   await dbConnect();
 
-  console.log('Fetching emails with tags...', Tag);
-
   try {
     const emails = await Email.find({}).sort({ receivedAt: -1 });
     const tags = await Tag.find({});
