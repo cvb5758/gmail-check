@@ -12,4 +12,4 @@ G-Check는 사용자의 Gmail 계정을 관리하고 효율적으로 이메일�
 - **태그 관리**: 이메일에 태그를 추가하거나 삭제하여 조직을 유지합니다.
 - **이메일 체크리스트**: 중요 이메일을 체크리스트로 관리하여 중요한 작업을 추적합니다.
 
-[프로젝트에 대한 이야기](https://sulog-blog.vercel.app/posts/%EC%8B%A4%ED%8C%A8%EA%B0%80%20%EC%95%84%EB%8B%8C%20%EB%AF%B8%EC%99%84%EC%84%B1)
+[프로젝트에 대한 이야기](https://sulog-blog.vercel.app/posts/incomplete)
