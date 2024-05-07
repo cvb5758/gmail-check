@@ -9,7 +9,6 @@ export async function getEmails() {
     const emails = await response.json();
 
     return emails.map((email: any) => ({
-      ...emails,
       id: email._id.toString(),
       subject: email.subject,
       isChecked: email.isChecked,

@@ -55,14 +55,6 @@ export default async function handler(
       })
     );
 
-    // const existingEmails = await Email.find({
-    //   id: { $in: details.map((email) => email.id) },
-    // }).exec();
-
-    // const existingEmailIds = existingEmails.map((email) => email.id);
-    // const newEmails = details.filter(
-    //   (email) => !existingEmailIds.includes(email.id)
-    // );
 
     const existingIds = (await Email.find({}).select('id').lean()).map(
       (email) => email.id
@@ -74,18 +66,6 @@ export default async function handler(
     if (newEmails.length > 0) {
       await Email.insertMany(newEmails);
     }
-
-    // const newTitles = [];
-    // for (const title of details) {
-    //   const exists = await Email.exists({ id: title.id });
-    //   if (!exists) {
-    //     newTitles.push(title);
-    //   }
-    // }
-
-    // if (newTitles.length > 0) {
-    //   await Email.insertMany(newTitles);
-    // }
 
     res.status(200).json(newEmails);
   } catch (error) {
