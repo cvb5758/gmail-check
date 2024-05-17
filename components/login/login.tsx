@@ -16,7 +16,7 @@ export default function LoginPage() {
       >
         <Logo />
         <div className="w-full flex flex-col items-center justify-center gap-4">
-          <h1 className="text-xl font-bold">G-Check []</h1>
+          <h1 className="text-xl font-bold">G-Check</h1>
           <Button
             className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out flex items-center "
             onClick={handleLogin}
