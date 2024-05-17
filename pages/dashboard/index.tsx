@@ -30,16 +30,16 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
           </Button>
         </div>
       </header>
-      <EmailList emails={emails} />
+      {/* <EmailList emails={emails} /> */}
     </section>
   );
 }
 
-export async function getServerSideProps() {
-  const emails = await getEmails();
-  return {
-    props: {
-      emails,
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const emails = await getEmails();
+//   return {
+//     props: {
+//       emails,
+//     },
+//   };
+// }
