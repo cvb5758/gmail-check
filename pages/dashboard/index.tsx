@@ -19,7 +19,9 @@ export default function Dashboard({ emails }: { emails: Email[] }) {
     <section className="flex flex-col bg-blue-50  min-h-screen">
       <header className="bg-white shadow-sm sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 lg:px-8 h-24">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full gap-4">
-          <h1 className="text-3xl font-bold text-gray-600 p-2">G-Check</h1>
+          <h1 className="text-3xl font-bold text-gray-600 p-2">
+            G-Check [test]
+          </h1>
           <Button
             className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-3 px-4 rounded-lg shadow-lg flex items-center"
             onClick={handleLogout}

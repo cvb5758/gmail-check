@@ -26,7 +26,6 @@ export default function ListDetail({
   const selectedTags = tags
     ?.filter((tag) => tag.selected)
     .map((tag) => tag.name);
-  console.log('selectedTags', selectedTags);
 
   const filteredEmails =
     selectedTags.length > 0
