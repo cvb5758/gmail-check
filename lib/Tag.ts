@@ -1,15 +1,12 @@
 export const AddTag = async (name: string) => {
   try {
-    const response = await fetch(
-      'https://gmail-checklist.vercel.app/api/tags',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }),
-      }
-    );
+    const response = await fetch('/api/tags', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
 
     console.log('Response from adding tag:', response);
 
@@ -26,15 +23,12 @@ export const AddTag = async (name: string) => {
 
 export const fetchTags = async () => {
   try {
-    const response = await fetch(
-      'https://gmail-checklist.vercel.app/api/tags',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await fetch('/api/tags', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (response.ok) {
       const tags = await response.json();
@@ -50,16 +44,13 @@ export const fetchTags = async () => {
 
 export const DeleteTag = async (name: string) => {
   try {
-    const response = await fetch(
-      'https://gmail-checklist.vercel.app/api/tags',
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }),
-      }
-    );
+    const response = await fetch('/api/tags', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
 
     if (response.ok) {
       return await response.json();
@@ -75,16 +66,13 @@ export const DeleteTag = async (name: string) => {
 export const ToggleTag = async (tagId: string) => {
   console.log('Toggling tag:', tagId);
   try {
-    const response = await fetch(
-      'https://gmail-checklist.vercel.app/api/tags/toggle',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ _id: tagId }),
-      }
-    );
+    const response = await fetch('/api/tags/toggle', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id: tagId }),
+    });
 
     if (response.ok) {
       return await response.json();
