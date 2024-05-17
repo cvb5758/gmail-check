@@ -5,7 +5,9 @@ import Tag from './db/tag.model';
 export async function getEmails() {
   await dbConnect();
   try {
-    const response = await fetch('http://localhost:3000/api/emails/getEmails');
+    const response = await fetch(
+      'https://gmail-checklist.vercel.app/api/emails/getEmails'
+    );
     const emails = await response.json();
 
     return emails.map((email: any) => ({
@@ -29,7 +31,7 @@ export async function fetchEmails() {
   try {
     console.log('Fetching emails...');
     const response = await fetch(
-      'http://localhost:3000/api/emails/fetchEmails'
+      'https://gmail-checklist.vercel.app/api/emails/fetchEmails'
     );
 
     if (!response.ok) {
@@ -50,7 +52,7 @@ export async function checkedEmails(
 ): Promise<void> {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/emails/${emailId}`,
+      `https://gmail-checklist.vercel.app/api/emails/${emailId}`,
       {
         method: 'PUT',
         headers: {

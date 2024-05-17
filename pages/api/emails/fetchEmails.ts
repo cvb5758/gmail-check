@@ -55,7 +55,6 @@ export default async function handler(
       })
     );
 
-
     const existingIds = (await Email.find({}).select('id').lean()).map(
       (email) => email.id
     );
